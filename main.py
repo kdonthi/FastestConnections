@@ -43,7 +43,6 @@ def parse_input(fileName):
         return connectionsDict, source, dest
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == "__main__":
     dictionary, src, dest = parse_input("input.txt")
     for node in dictionary:
@@ -51,4 +50,3 @@ if __name__ == "__main__":
     print(src)
     print(dest)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
