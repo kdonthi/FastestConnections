@@ -122,4 +122,5 @@ if __name__ == "__main__":
     begin = time.time()
     print(solve_tree())
     end = time.time()
+    print("Time taken: ", end="")
     print(end - begin)
