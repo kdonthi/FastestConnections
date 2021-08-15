@@ -26,7 +26,7 @@ import sys
 import os
 
 nodes = "ABCDEF"
-connectionCosts = {}
+connection_costs = {}
 
 
 def solve_tree():
@@ -35,10 +35,10 @@ def solve_tree():
     filename = args[1]
     check_valid_file(filename)
 
-    global connectionCosts
-    connectionCosts, src, dest = parse_input(filename)
+    global connection_costs
+    connection_costs, src, dest = parse_input(filename)
     _, path = find_lowest_cost_path(src, dest, [src])
-    output = get_output_string(connectionCosts, path)
+    output = get_output_string(connection_costs, path)
     return output
 
 
@@ -72,36 +72,36 @@ def parse_input(fileName):
                     currNode = element
                 else:
                     dest = nodes[nodeIndex]
-                    connectionsDict[currNode][dest] = [False, int(element), [currNode,
-                                                                             dest]]  # Has minimum for this path been found, cost, path
+                    connectionsDict[currNode][dest] = [False, int(element), [currNode, dest]]  #minimum found, cost, path
                     nodeIndex += 1
         source = fileList[8].split(" ")[1].strip()
         dest = fileList[9].split(" ")[1].strip()
         return connectionsDict, source, dest
 
 
-def find_lowest_cost_path(src: str, dest: str, visited: list[str]):  # return path, cost, include src in visited
+def find_lowest_cost_path(src: str, dest: str, visited: list[str]):
     if src == dest:
         return [0, [src, dest]]
     nodesToVisitNext = []
     for node in nodes:
         if node not in visited and node != src:
             if node == dest:
-                nodesToVisitNext.append((connectionCosts[src][node][1], [src, dest]))
+                nodesToVisitNext.append((connection_costs[src][node][1], [src, dest]))
             else:
-                if not connectionCosts[node][dest][0]:
+                if not connection_costs[node][dest][0]:
                     set_connection_cost(node, dest, visited)
-                nodesToVisitNext.append((connectionCosts[src][node][1] + connectionCosts[node][dest][1],
-                                         [src] + connectionCosts[node][dest][2]))
+                nodesToVisitNext.append((connection_costs[src][node][1] + connection_costs[node][dest][1],
+                                         [src] + connection_costs[node][dest][2]))
     nodesToVisitNext.sort(key=lambda x: x[0])  # sorting by connnection costs
     return nodesToVisitNext[0]
 
 
 def set_connection_cost(node, dest, visited):
     lowestCost, path = find_lowest_cost_path(node, dest, visited + [node])
-    connectionCosts[node][dest][1] = lowestCost
-    connectionCosts[node][dest][2] = path
-    connectionCosts[node][dest][0] = True
+    connection_cost_node_to_dest = connection_costs[node][dest]
+    connection_cost_node_to_dest[1] = lowestCost
+    connection_cost_node_to_dest[2] = path
+    connection_cost_node_to_dest[0] = True
 
 
 def get_output_string(connection_costs, path):
@@ -118,4 +118,8 @@ def get_output_string(connection_costs, path):
 
 
 if __name__ == "__main__":
+    import time
+    begin = time.time()
     print(solve_tree())
+    end = time.time()
+    print(end - begin)
