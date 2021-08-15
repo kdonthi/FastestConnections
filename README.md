@@ -6,7 +6,7 @@ This project finds the fastest connections between two points on a directed K6 (
 ## Input Details
 I thought of each vertex as a letter from A to F. The input file should be an adjacency matrix with the weight of connection A -> B is in row A and column B. Each value is seperated by a space and each row is seperated by a newline.
 
-After the adjacency matrix, include the starting vertex after `"Source"` and the ending vertex after `"Target"`.
+After the adjacency matrix, include the starting vertex after `"Source: "` and the ending vertex after `"Target: "`. (Note: make sure that `Source:` and `Target:` have a space after them and before the number.)
 
 Samples of inputs can be find in `input.txt` and `input2.txt`.
 
