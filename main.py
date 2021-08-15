@@ -25,9 +25,39 @@ You will be checked on:
 import sys
 import os
 
-
 nodes = "ABCDEF"
 connectionCosts = {}
+
+
+def solve_tree():
+    args = sys.argv
+    check_valid_number_of_parameters(args)
+    filename = args[1]
+    check_valid_file(filename)
+
+    global connectionCosts
+    connectionCosts, src, dest = parse_input(filename)
+    _, path = find_lowest_cost_path(src, dest, [src])
+    output = get_output_string(connectionCosts, path)
+    return output
+
+
+def check_valid_number_of_parameters(args):
+    if len(args) != 2:
+        print(args)
+        print(len(args))
+        raise Exception(
+            "Make sure there is only one argument, and that it is the input filename (e.g. \"python3 main.py "
+            "input.txt\")")
+
+
+def check_valid_file(filename):
+    if not os.path.exists(filename):
+        raise Exception("Not a valid filepath.")
+    if filename[-4:] != ".txt":
+        raise Exception("Not a .txt file.")
+
+
 def parse_input(fileName):
     connectionsDict = {}
     with open(fileName, "r") as inputFile:
@@ -41,42 +71,17 @@ def parse_input(fileName):
                     currNode = element
                 else:
                     dest = nodes[nodeIndex]
-                    connectionsDict[currNode][dest] = [False, int(element), [currNode, dest]] #Has minimum for this path been found, cost, path
+                    connectionsDict[currNode][dest] = [False, int(element), [currNode,
+                                                                             dest]]  # Has minimum for this path been found, cost, path
                     nodeIndex += 1
         source = fileList[8].split(" ")[1].strip()
         dest = fileList[9].split(" ")[1].strip()
         return connectionsDict, source, dest
 
-def solve_tree():
-    args = sys.argv
-    if len(args) != 2:
-        print(args)
-        print(len(args))
-        raise Exception("Make sure there is only one argument, and that it is the input filename (e.g. \"python3 main.py input.txt\")")
-    filename = args[1]
-    if not os.path.exists(filename):
-        raise Exception("Not a valid filepath.")
-    if filename[-4:] != ".txt":
-        raise Exception("Not a .txt file.")
 
-    global connectionCosts
-    connectionCosts, src, dest = parse_input(filename)
-    cost, path = findLowestCostPath(src, dest, [src])
-    output = ""
-    for i in range(len(path[:-1])):
-        if i != 0:
-            output += " "
-        output += path[i]
-        output += " -- ("
-        output += str(connectionCosts[path[i]][path[i + 1]][1])
-        output += ") -->"
-    output += " " + path[-1]
-    return output
-
-
-def findLowestCostPath(src: str, dest: str, visited: list[str]): #return path, cost, include src in visited
+def find_lowest_cost_path(src: str, dest: str, visited: list[str]):  # return path, cost, include src in visited
     if src == dest:
-        return ([0, [src, dest]])
+        return [0, [src, dest]]
     nodesToVisitNext = []
     for node in nodes:
         if node not in visited and node != src:
@@ -85,16 +90,31 @@ def findLowestCostPath(src: str, dest: str, visited: list[str]): #return path, c
             else:
                 if not connectionCosts[node][dest][0]:
                     set_connection_cost(node, dest, visited)
-                nodesToVisitNext.append((connectionCosts[src][node][1] + connectionCosts[node][dest][1], [src] + connectionCosts[node][dest][2]))
-    nodesToVisitNext.sort(key=lambda x: x[0]) #sorting by connnection costs
+                nodesToVisitNext.append((connectionCosts[src][node][1] + connectionCosts[node][dest][1],
+                                         [src] + connectionCosts[node][dest][2]))
+    nodesToVisitNext.sort(key=lambda x: x[0])  # sorting by connnection costs
     return nodesToVisitNext[0]
 
 
 def set_connection_cost(node, dest, visited):
-    lowestCost, path = findLowestCostPath(node, dest, visited + [node])
+    lowestCost, path = find_lowest_cost_path(node, dest, visited + [node])
     connectionCosts[node][dest][1] = lowestCost
     connectionCosts[node][dest][2] = path
     connectionCosts[node][dest][0] = True
+
+
+def get_output_string(connection_costs, path):
+    output = ""
+    for i in range(len(path[:-1])):
+        if i != 0:
+            output += " "
+        output += path[i]
+        output += " -- ("
+        output += str(connection_costs[path[i]][path[i + 1]][1])
+        output += ") -->"
+    output += " " + path[-1]
+    return output
+
 
 if __name__ == "__main__":
     print(solve_tree())
