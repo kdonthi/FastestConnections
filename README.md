@@ -9,3 +9,7 @@ I thought of each vertex as a letter from A to F. The input file should be an ad
 After the adjacency matrix, include the starting vertex after `"Source"` and the ending vertex after `"Target"`.
 
 Samples of inputs can be find in `input.txt` and `input2.txt`.
+
+## Running the program/Output
+The program can be run using `python3 main.py [INPUT_FILE_NAME]` and should produce an output like this: `B -- (1) --> C -- (1) --> D -- (2) --> E`, where nodes and the costs between them are shown in the lowest cost path.
+
