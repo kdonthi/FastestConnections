@@ -63,6 +63,7 @@ def parse_input(fileName):
     with open(fileName, "r") as inputFile:
         fileList = list(inputFile)
         for line in fileList[1:7]:
+            line = line.strip()
             currNode = None
             nodeIndex = 0
             for index, element in enumerate(line.split(" ")):
