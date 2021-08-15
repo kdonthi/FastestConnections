@@ -62,16 +62,17 @@ def solve_tree():
     global connectionCosts
     connectionCosts, src, dest = parse_input(filename)
     cost, path = findLowestCostPath(src, dest, [src])
-    print("Cost: ", end="")
-    print(cost)
+    output = ""
     for i in range(len(path[:-1])):
         if i != 0:
-            print(" ", end="")
-        print(path[i], end="")
-        print(" -- (", end="")
-        print(connectionCosts[path[i]][path[i + 1]][1], end="")
-        print(") -->", end="")
-    print(" " + path[-1])
+            output += " "
+        output += path[i]
+        output += " -- ("
+        output += str(connectionCosts[path[i]][path[i + 1]][1])
+        output += ") -->"
+    output += " " + path[-1]
+    return output
+
 
 def findLowestCostPath(src: str, dest: str, visited: list[str]): #return path, cost, include src in visited
     if src == dest:
@@ -82,7 +83,6 @@ def findLowestCostPath(src: str, dest: str, visited: list[str]): #return path, c
             if node == dest:
                 nodesToVisitNext.append((connectionCosts[src][node][1], [src, dest]))
             else:
-                #memoization
                 if not connectionCosts[node][dest][0]:
                     set_connection_cost(node, dest, visited)
                 nodesToVisitNext.append((connectionCosts[src][node][1] + connectionCosts[node][dest][1], [src] + connectionCosts[node][dest][2]))
@@ -96,6 +96,5 @@ def set_connection_cost(node, dest, visited):
     connectionCosts[node][dest][2] = path
     connectionCosts[node][dest][0] = True
 
-
 if __name__ == "__main__":
-    solve_tree()
+    print(solve_tree())

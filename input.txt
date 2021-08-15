@@ -2,12 +2,12 @@
 A 0 2 3 4 5 6
 B 3 0 1 5 4 3
 C 3 5 0 0 5 4
-D 3 4 3 0 4 5
+D 3 4 3 0 4 36
 E 3 5 6 3 0 2
 F 3 4 5 3 4 0
 
-Source: C
-Target: E
+Source: D
+Target: F
 
 
 
