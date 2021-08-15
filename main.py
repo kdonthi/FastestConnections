@@ -32,7 +32,7 @@ def parse_input(fileName):
     connectionsDict = {}
     with open(fileName, "r") as inputFile:
         fileList = list(inputFile)
-        for line in fileList[0:6]:
+        for line in fileList[1:7]:
             currNode = None
             nodeIndex = 0
             for index, element in enumerate(line.split(" ")):
@@ -43,8 +43,8 @@ def parse_input(fileName):
                     dest = nodes[nodeIndex]
                     connectionsDict[currNode][dest] = [False, int(element), [currNode, dest]] #Has minimum for this path been found, cost, path
                     nodeIndex += 1
-        source = fileList[7].split(" ")[1].strip()
-        dest = fileList[8].split(" ")[1].strip()
+        source = fileList[8].split(" ")[1].strip()
+        dest = fileList[9].split(" ")[1].strip()
         return connectionsDict, source, dest
 
 def solve_tree():
@@ -74,6 +74,8 @@ def solve_tree():
     print(" " + path[-1])
 
 def findLowestCostPath(src: str, dest: str, visited: list[str]): #return path, cost, include src in visited
+    if src == dest:
+        return ([0, [src, dest]])
     nodesToVisitNext = []
     for node in nodes:
         if node not in visited and node != src:
